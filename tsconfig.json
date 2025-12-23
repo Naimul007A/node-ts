@@ -31,6 +31,8 @@
     "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
     "moduleResolution": "Node",
     "paths": {
+        "@/*": ["./*"],
+      "@services/*": ["app/services/*"],
       "@controllers/*": ["app/controllers/*"],
       "@models/*": ["app/models/*"],
       "@middleware/*": ["app/middleware/*"],
@@ -38,7 +40,8 @@
       "@utils/*": ["app/utils/*"],
       "@helpers/*": ["app/helpers/*"],
       "@public/*": ["public"]
-    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
+    }
+    /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
