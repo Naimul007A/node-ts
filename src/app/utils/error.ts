@@ -4,11 +4,11 @@ import { ZodError } from "zod";
 
 //Throw error properly
 async function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-  //@ts-ignore
-  if (err.isJoi === true) {
     //@ts-ignore
-    err.status = 422;
-  }
+    if (err.isJoi === true) {
+        //@ts-ignore
+        err.status = 422;
+    }
     let messages: string | object = err.message;
     if (err instanceof ZodError) {
         const formattedErrors = err.issues.reduce((errors: { [key: string]: string }, issue) => {
@@ -19,19 +19,20 @@ async function errorHandler(err: Error, req: Request, res: Response, next: NextF
         err.status = 422;
         messages = formattedErrors;
     }
-  //@ts-ignore
-  err.status = err.status || 500;
-  res.send({
-    error: {
-      //@ts-ignore
-      status: err.status || 500,
-          message: messages,
-    },
-  });
+    //@ts-ignore
+    err.status = err.status || 500;
+    //@ts-ignore
+    res.status(err.status || 500).send({
+        error: {
+            //@ts-ignore
+            status: err.status || 500,
+            message: messages,
+        },
+    });
 }
 //Route Not found
 async function notFound(req: Request, res: Response, next: NextFunction) {
-  next(createHttpError.NotFound("This Route not Registered."));
+    next(createHttpError.NotFound("This Route not Registered."));
 }
 
 export { errorHandler, notFound };
