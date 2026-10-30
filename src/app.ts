@@ -1,12 +1,11 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { type Application, type Request, type Response } from "express";
 import rateLimit from 'express-rate-limit';
 import { errorHandler, notFound } from "@utils/error";
 import { route as Routes } from "@routes/routes";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from "cors";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 const app: Application = express();
 // Rate limiting middleware
 const limiter = rateLimit({
@@ -34,7 +33,5 @@ app.use("/api/v1", Routes);
 app.use(notFound);
 //error check and return
 app.use(errorHandler);
-const PORT = process.env.PORT || 3502;
-app.listen(PORT, () => {
-    console.log(`Application is running at port : http://localhost:${PORT} `);
-});
+
+export default app;

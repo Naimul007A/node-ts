@@ -28,6 +28,8 @@ Set `DATABASE_URL` in `.env` to your MySQL connection URL before using the datab
 | `pnpm dev` | Run the TypeScript app with automatic restarts |
 | `pnpm build` | Compile TypeScript and rewrite path aliases |
 | `pnpm start` | Run the compiled app from `dist` |
+| `pnpm test` | Run the API test suite once |
+| `pnpm test:watch` | Run tests in watch mode |
 | `pnpm db:generate` | Generate SQL migrations from the Drizzle schema |
 | `pnpm db:migrate` | Apply generated migrations to the configured MySQL database |
 | `pnpm db:studio` | Open Drizzle Studio for the configured database |
@@ -45,7 +47,8 @@ API routes are rate limited to 100 requests per IP per 15-minute window. Request
 
 ```text
 src/
-  app.ts                         Express app and middleware setup
+  app.ts                         Express app, exported for tests
+  server.ts                      Starts the HTTP listener
   routes/routes.ts               Versioned API routes
   app/controllers/                HTTP request handlers
   app/services/                   Application logic
@@ -54,6 +57,12 @@ src/
 ```
 
 Add endpoints in `src/routes/routes.ts`, keep request/response handling in controllers, and put application logic in services. Import aliases are configured in `tsconfig.json` and resolved in the build by `tsc-alias`.
+
+`pnpm dev` runs `src/server.ts` with `ts-node-dev`. The Express app is exported from `src/app.ts`, so tests can exercise it without opening a fixed port. `pnpm build` emits JavaScript into `dist/`, and `pnpm start` runs `dist/server.js`. Do not commit generated `dist/` or `node_modules/`.
+
+## Tests
+
+Tests use Vitest and Supertest. The suite covers the health endpoint response, the root status route, and JSON not-found behavior. Add API tests under `tests/` with filenames ending in `.test.ts`, then run `pnpm test`.
 
 ## Database
 
@@ -74,4 +83,4 @@ Add endpoints in `src/routes/routes.ts`, keep request/response handling in contr
 
 ## Agent skills
 
-Project-specific agent skills are in [`.agent/skills/`](.agent/skills/): `express-api-route`, `express-error-handling`, `typescript-project-maintenance`, and `drizzle-mysql`. See [`AGENTS.md`](AGENTS.md) for project guidance for AI agents.
+Project-specific agent skills are in [`.agent/skills/`](.agent/skills/): `express-api-route`, `express-error-handling`, `typescript-project-maintenance`, `drizzle-mysql`, and `api-testing`. See [`AGENTS.md`](AGENTS.md) for project guidance for AI agents.

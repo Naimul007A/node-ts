@@ -1,13 +1,15 @@
 {
     "name": "photos",
     "version": "1.0.0",
-    "main": "app.ts",
+    "main": "dist/server.js",
     "license": "MIT",
     "scripts": {
-        "start": "node dist/app.js",
-        "dev": "ts-node-dev -r tsconfig-paths/register ./src/app.ts",
+        "start": "node dist/server.js",
+        "dev": "ts-node-dev -r tsconfig-paths/register ./src/server.ts",
         "build": "tsc && tsc-alias",
-        "build:2": "tsc && tsc-alias && node ./dist/app.js",
+        "build:2": "tsc && tsc-alias && node ./dist/server.js",
+        "test": "vitest run",
+        "test:watch": "vitest",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio"
@@ -31,14 +33,17 @@
         "@types/http-errors": "^2.0.5",
         "@types/morgan": "^1.9.10",
         "@types/node": "^20.19.27",
+        "@types/supertest": "^7.2.1",
         "drizzle-kit": "^0.31.11",
         "nodemon": "^3.1.14",
         "rimraf": "^5.0.10",
+        "supertest": "^7.3.1",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "tsc-alias": "^1.9.9",
         "tsconfig-paths": "^4.2.0",
         "tsx": "^4.23.15",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.3",
+        "vitest": "^4.1.12"
     }
 }

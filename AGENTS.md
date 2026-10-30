@@ -23,7 +23,8 @@ This file gives AI coding agents the context and conventions needed to work in t
 
 ```text
 src/
-├── app.ts                         # Express setup, middleware, routes, and server startup
+├── app.ts                         # Express setup, middleware, and routes; exports the app
+├── server.ts                      # Starts the HTTP listener
 ├── routes/
 │   └── routes.ts                  # Versioned API route registrations
 └── app/
@@ -34,7 +35,6 @@ src/
     ├── lib/
     │   └── database.ts            # MySQL pool, Drizzle client, and shutdown helper
     ├── utils/                     # Shared utilities and error handling
-    ├── config/                    # Application configuration
     ├── helpers/                   # Helper functions
     ├── lib/                       # Shared libraries and integrations
     └── models/                    # Data models and Drizzle schema
@@ -42,6 +42,8 @@ src/
 .agent/skills/                     # Repository-specific agent skills
 drizzle/                           # Generated SQL migrations
 drizzle.config.ts                  # Drizzle Kit configuration
+tests/                             # Vitest and Supertest API tests
+vitest.config.mts                  # Test runner and TypeScript path aliases
 ```
 
 Some directories are currently placeholders. Add files only when the feature needs them.
@@ -63,10 +65,18 @@ pnpm install
 cp .env.example .env
 pnpm dev
 pnpm build
+pnpm test
 pnpm start
 ```
 
-`pnpm dev` runs `src/app.ts` with `ts-node-dev`. `pnpm build` emits JavaScript into `dist/`, and `pnpm start` runs `dist/app.js`. Do not commit generated `dist/` or `node_modules/` content.
+`pnpm dev` runs `src/server.ts` with `ts-node-dev`. `src/app.ts` exports the Express app without starting a listener so Supertest can exercise routes in-process. `pnpm build` emits JavaScript into `dist/`, and `pnpm start` runs `dist/server.js`. Do not commit generated `dist/` or `node_modules/` content.
+
+## Testing Conventions
+
+- Use Vitest for the test runner and Supertest for HTTP-level tests.
+- Put API tests in `tests/` and name them `*.test.ts`.
+- Test externally visible status codes and response bodies through the exported Express app.
+- Run `pnpm test` and `pnpm build` when changing application behavior.
 
 ## Implementation Conventions
 
@@ -87,3 +97,4 @@ Read the relevant skill before work in its area:
 - `.agent/skills/express-api-route/SKILL.md` for API routes, controllers, and services.
 - `.agent/skills/express-error-handling/SKILL.md` for middleware and error responses.
 - `.agent/skills/typescript-project-maintenance/SKILL.md` for package, script, and TypeScript configuration changes.
+- `.agent/skills/api-testing/SKILL.md` for adding and maintaining automated tests.
