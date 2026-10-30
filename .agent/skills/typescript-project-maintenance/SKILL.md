@@ -7,6 +7,7 @@ description: Maintain dependencies, scripts, TypeScript configuration, and build
 
 - Treat pnpm as the canonical package manager; use `pnpm-lock.yaml` for dependency resolution.
 - Keep `package.json` scripts, package metadata, and lockfile consistent when changing dependencies.
+- For database changes, keep the Drizzle schema in `src/app/models/schema.ts` and generated SQL migrations under `drizzle/` in sync.
 - Prefer compatible, non-breaking updates unless the task requests major upgrades. Review migration notes for major changes.
 - Keep the `build` script compiling with `tsc` and resolving aliases with `tsc-alias`.
 - Preserve strict TypeScript checking and the path aliases used by the source tree.

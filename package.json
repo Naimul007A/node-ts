@@ -7,16 +7,21 @@
         "start": "node dist/app.js",
         "dev": "ts-node-dev -r tsconfig-paths/register ./src/app.ts",
         "build": "tsc && tsc-alias",
-        "build:2": "tsc && tsc-alias && node ./dist/app.js"
+        "build:2": "tsc && tsc-alias && node ./dist/app.js",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:studio": "drizzle-kit studio"
     },
     "dependencies": {
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.6",
         "dotenv": "^16.6.1",
+        "drizzle-orm": "^0.45.4",
         "express": "^4.22.1",
         "express-rate-limit": "^8.7.1",
         "http-errors": "^2.0.1",
         "morgan": "^1.12.1",
+        "mysql2": "^3.24.6",
         "zod": "^3.25.76"
     },
     "devDependencies": {
@@ -26,6 +31,7 @@
         "@types/http-errors": "^2.0.5",
         "@types/morgan": "^1.9.10",
         "@types/node": "^20.19.27",
+        "drizzle-kit": "^0.31.11",
         "nodemon": "^3.1.14",
         "rimraf": "^5.0.10",
         "ts-node": "^10.9.2",

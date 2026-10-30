@@ -13,6 +13,7 @@ This file gives AI coding agents the context and conventions needed to work in t
 - **Language:** TypeScript 5, configured in `tsconfig.json` with strict checking
 - **HTTP framework:** Express 4
 - **Validation:** Zod 3
+- **Database ORM:** Drizzle ORM with the MySQL dialect and `mysql2`
 - **Middleware:** `cors`, `cookie-parser`, `morgan`, `express-rate-limit`, and Express JSON/form parsers
 - **Configuration:** `dotenv`, with `.env.example` as the template
 - **Package manager:** pnpm; `pnpm-lock.yaml` is the maintained lockfile
@@ -29,13 +30,18 @@ src/
     ├── controllers/               # HTTP request handlers
     ├── services/                  # Application/business logic
     ├── middleware/                # Reusable Express middleware
+    ├── config/                    # Application settings
+    ├── lib/
+    │   └── database.ts            # MySQL pool, Drizzle client, and shutdown helper
     ├── utils/                     # Shared utilities and error handling
     ├── config/                    # Application configuration
     ├── helpers/                   # Helper functions
     ├── lib/                       # Shared libraries and integrations
-    └── models/                    # Data models
+    └── models/                    # Data models and Drizzle schema
 
 .agent/skills/                     # Repository-specific agent skills
+drizzle/                           # Generated SQL migrations
+drizzle.config.ts                  # Drizzle Kit configuration
 ```
 
 Some directories are currently placeholders. Add files only when the feature needs them.
@@ -46,6 +52,8 @@ Some directories are currently placeholders. Add files only when the feature nee
 - `GET /` returns a basic server status message.
 - `GET /api/v1/health` is the health endpoint. Its controller delegates to `ServerService` and returns a `success` response object.
 - Not-found and centralized error middleware are defined in `src/app/utils/error.ts` and registered after the routes.
+- Drizzle uses a `mysql2` connection pool from `src/app/lib/database.ts`; table definitions belong in `src/app/models/schema.ts`. The starter schema defines a `photos` table.
+- Database commands use `DATABASE_URL` from `.env`. Generate migrations with `pnpm db:generate` and apply reviewed migrations with `pnpm db:migrate`.
 - The default port in `src/app.ts` is `3502`; `.env.example` sets `PORT=3501`.
 
 ## Development Commands
@@ -69,6 +77,7 @@ pnpm start
 - Use the aliases configured in `tsconfig.json` (such as `@utils/*`, `@routes/*`, and `@services/*`) when applicable.
 - Keep TypeScript strictness and the existing Express 4 and Zod 3 major versions unless a task explicitly includes a migration.
 - For dependency changes, update `package.json` and `pnpm-lock.yaml` together. Do not add a dependency when the current stack already provides the needed functionality.
+- Keep Drizzle schema changes and generated SQL migrations in sync. Review generated SQL before applying it to a database.
 - Update `README.md` when public endpoints, setup, scripts, or environment variables change.
 
 ## Agent Skills
