@@ -1,5 +1,5 @@
 import express, { type Application, type Request, type Response } from "express";
-import rateLimit from 'express-rate-limit';
+import rateLimit from "express-rate-limit";
 import { errorHandler, notFound } from "@utils/error";
 import { route as Routes } from "@routes/routes";
 import cookieParser from "cookie-parser";
@@ -12,12 +12,10 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
     handler: (_req, res) => {
-        res
-            .status(429)
-            .json({ message: 'Too many requests, please try again later.' });
+        res.status(429).json({ message: "Too many requests, please try again later." });
     },
 });
-app.use('/api', limiter);
+app.use("/api", limiter);
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());

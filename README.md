@@ -6,7 +6,7 @@ Database access uses Drizzle ORM with MySQL through `mysql2`.
 
 ## Requirements
 
-- Node.js 20 or later
+- Node.js 20.19 or later
 - pnpm 12 (or a compatible pnpm version)
 
 ## Setup
@@ -23,23 +23,27 @@ Set `DATABASE_URL` in `.env` to your MySQL connection URL before using the datab
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `pnpm dev` | Run the TypeScript app with automatic restarts |
-| `pnpm build` | Compile TypeScript and rewrite path aliases |
-| `pnpm start` | Run the compiled app from `dist` |
-| `pnpm test` | Run the API test suite once |
-| `pnpm test:watch` | Run tests in watch mode |
-| `pnpm db:generate` | Generate SQL migrations from the Drizzle schema |
-| `pnpm db:migrate` | Apply generated migrations to the configured MySQL database |
-| `pnpm db:studio` | Open Drizzle Studio for the configured database |
+| Command             | Description                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| `pnpm dev`          | Run the TypeScript app with automatic restarts              |
+| `pnpm build`        | Compile TypeScript and rewrite path aliases                 |
+| `pnpm start`        | Run the compiled app from `dist`                            |
+| `pnpm test`         | Run the API test suite once                                 |
+| `pnpm test:watch`   | Run tests in watch mode                                     |
+| `pnpm lint`         | Check JavaScript and TypeScript with ESLint                 |
+| `pnpm lint:fix`     | Automatically fix ESLint issues where possible              |
+| `pnpm format`       | Format supported files with Prettier                        |
+| `pnpm format:check` | Check formatting without changing files                     |
+| `pnpm db:generate`  | Generate SQL migrations from the Drizzle schema             |
+| `pnpm db:migrate`   | Apply generated migrations to the configured MySQL database |
+| `pnpm db:studio`    | Open Drizzle Studio for the configured database             |
 
 ## Endpoints
 
-| Method | Path | Description |
-| --- | --- | --- |
-| `GET` | `/` | Basic server status text |
-| `GET` | `/api/v1/health` | Health response with `success.message` and `success.data` |
+| Method | Path             | Description                                               |
+| ------ | ---------------- | --------------------------------------------------------- |
+| `GET`  | `/`              | Basic server status text                                  |
+| `GET`  | `/api/v1/health` | Health response with `success.message` and `success.data` |
 
 API routes are rate limited to 100 requests per IP per 15-minute window. Requests over the limit receive HTTP `429`.
 
@@ -64,6 +68,10 @@ Add endpoints in `src/routes/routes.ts`, keep request/response handling in contr
 
 Tests use Vitest and Supertest. The suite covers the health endpoint response, the root status route, and JSON not-found behavior. Add API tests under `tests/` with filenames ending in `.test.ts`, then run `pnpm test`.
 
+## Code Quality
+
+ESLint uses the flat config with the recommended JavaScript and TypeScript rules. Prettier handles formatting, and `eslint-config-prettier` disables overlapping formatting rules. Husky runs `lint-staged` before each commit to lint and format staged source files. Run `pnpm run prepare` if Git hooks need to be installed manually.
+
 ## Database
 
 - Define tables in `src/app/models/schema.ts` using `drizzle-orm/mysql-core`.
@@ -75,10 +83,10 @@ Tests use Vitest and Supertest. The suite covers the health endpoint response, t
 
 ## Environment
 
-| Variable | Example | Description |
-| --- | --- | --- |
-| `PORT` | `3501` | HTTP port |
-| `NODE_ENV` | `development` | Runtime environment |
+| Variable       | Example                                       | Description          |
+| -------------- | --------------------------------------------- | -------------------- |
+| `PORT`         | `3501`                                        | HTTP port            |
+| `NODE_ENV`     | `development`                                 | Runtime environment  |
 | `DATABASE_URL` | `mysql://root:password@localhost:3306/photos` | MySQL connection URL |
 
 ## Agent skills

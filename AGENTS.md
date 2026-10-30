@@ -9,7 +9,7 @@ This file gives AI coding agents the context and conventions needed to work in t
 
 ## Tech Stack
 
-- **Runtime:** Node.js 20 or later
+- **Runtime:** Node.js 20.19 or later
 - **Language:** TypeScript 5, configured in `tsconfig.json` with strict checking
 - **HTTP framework:** Express 4
 - **Validation:** Zod 3
@@ -18,6 +18,7 @@ This file gives AI coding agents the context and conventions needed to work in t
 - **Configuration:** `dotenv`, with `.env.example` as the template
 - **Package manager:** pnpm; `pnpm-lock.yaml` is the maintained lockfile
 - **Build:** `tsc` followed by `tsc-alias` to rewrite TypeScript path aliases
+- **Quality tools:** ESLint flat config, typescript-eslint, Prettier, Husky, and lint-staged
 
 ## Project Structure
 
@@ -66,6 +67,8 @@ cp .env.example .env
 pnpm dev
 pnpm build
 pnpm test
+pnpm lint
+pnpm format:check
 pnpm start
 ```
 
@@ -77,6 +80,7 @@ pnpm start
 - Put API tests in `tests/` and name them `*.test.ts`.
 - Test externally visible status codes and response bodies through the exported Express app.
 - Run `pnpm test` and `pnpm build` when changing application behavior.
+- Run `pnpm lint` for code quality and `pnpm format:check` to verify formatting. The pre-commit hook runs lint-staged on changed files.
 
 ## Implementation Conventions
 

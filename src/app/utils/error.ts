@@ -2,30 +2,25 @@ import { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
 import { ZodError } from "zod";
 
-//Throw error properly
-async function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-    //@ts-ignore
-    if (err.isJoi === true) {
-        //@ts-ignore
-        err.status = 422;
-    }
+type HttpError = Error & {
+    status?: number;
+    isJoi?: boolean;
+};
+
+async function errorHandler(err: HttpError, _req: Request, res: Response, _next: NextFunction) {
+    let statusCode = err.isJoi === true ? 422 : err.status || 500;
     let messages: string | object = err.message;
     if (err instanceof ZodError) {
         const formattedErrors = err.issues.reduce((errors: { [key: string]: string }, issue) => {
             errors[issue.path[0] as string] = issue.message;
             return errors;
         }, {});
-        //@ts-ignore
-        err.status = 422;
+        statusCode = 422;
         messages = formattedErrors;
     }
-    //@ts-ignore
-    err.status = err.status || 500;
-    //@ts-ignore
-    res.status(err.status || 500).send({
+    res.status(statusCode).send({
         error: {
-            //@ts-ignore
-            status: err.status || 500,
+            status: statusCode,
             message: messages,
         },
     });
